@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PEPE'S GAME - Videojuegos Seminuevos</title>
+  <meta name="description" content="Compra y vende videojuegos seminuevos de forma profesional y segura.">
+  
+  <!-- Fuentes: Usamos Kanit para un look moderno -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"> 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* =====================================
+       VARIABLES DE COLOR Y GRADIENTES
+       ===================================== */
+    :root {
+      --primary-color: #0D47A1;
+      --primary-gradient-start: #0D47A1;
+      --primary-gradient-end: #1565C0;
+      --secondary-color: #BF00FF;
+      --tertiary-color: #8A2BE2;
+      --hover-color: #1E88E5;
+    }
+    
+    /* =====================================
+       RESET Y ESTILOS BASE
+       ===================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Kanit', sans-serif;
+      background-color: #e3f2fd;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    /* Enlace para saltar a contenido (accesibilidad) */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--primary-color);
+      color: #fff;
+      padding: 8px;
+      z-index: 100;
+      transition: top 0.3s;
+    }
+    .skip-link:focus { top: 0; }
+    
+    /* =====================================
+       MODO OSCURO
+       ===================================== */
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    body.dark-mode header {
+      background: linear-gradient(90deg, #000, #333);
+    }
+    body.dark-mode nav {
+      background-color: #333;
+    }
+    body.dark-mode nav a {
+      background: #444;
+      color: #e0e0e0;
+    }
+    body.dark-mode .container {
+      background-color: #121212;
+    }
+    body.dark-mode footer {
+      background-color: #333;
+    }
+    
+    /* =====================================
+       HEADER
+       ===================================== */
+    header {
+      background: linear-gradient(90deg, var(--primary-gradient-start), var(--primary-gradient-end));
+      color: white;
+      padding: 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header .logo img {
+      max-width: 150px;
+      height: auto;
+    }
+    .title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      flex-grow: 1;
+    }
+    /* Contenedor de botones en el header: "Cuenta" y "Modo Oscuro" */
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .header-buttons button {
+      padding: 10px 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--secondary-color);
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .header-buttons button:hover {
+      background-color: var(--hover-color);
+    }
+    /* Botón de modo oscuro: mantenemos un único botón */
+    #modeToggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    #modeToggle img {
+      width: 30px;
+      height: 30px;
+    }
+    
+    /* =====================================
+       NAVEGACIÓN
+       ===================================== */
+    nav {
+      background-color: var(--primary-color);
+      padding: 15px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      padding: 12px 18px;
+      text-decoration: none;
+      margin: 8px;
+      display: inline-block;
+      font-weight: bold;
+      border-radius: 5px;
+      background: var(--primary-gradient-end);
+      transition: all 0.3s ease;
+    }
+    nav a:hover {
+      background: var(--hover-color);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      transform: scale(1.1);
+    }
+    
+    /* =====================================
+       CONTENEDOR PRINCIPAL Y BUSCADOR
+       ===================================== */
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+      text-align: center;
+    }
+    h2 {
+      color: var(--primary-gradient-end);
+      margin-bottom: 20px;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+    /* Buscador */
+    .search-container {
+      margin-bottom: 20px;
+    }
+    .search-container input {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    
+    /* =====================================
+       TARJETAS DE PRODUCTO
+       ===================================== */
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+      margin: 1.5rem;
+      padding: 1rem;
+      display: inline-block;
+      width: 42%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: scale(1.07);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    }
+    .card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .card h3 {
+      color: var(--primary-color);
+      font-size: 1.6em;
+      margin: 10px 0;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    .card p {
+      color: #555;
+      font-size: 1.2em;
+    }
+    
+    /* =====================================
+       FOOTER
+       ===================================== */
+    footer {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 30px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+    }
+    #backButton {
+      margin: 20px;
+      padding: 10px 15px;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--primary-color);
+      color: white;
+      transition: background-color 0.3s;
+    }
+    #backButton:hover {
+      background-color: var(--hover-color);
+    }
+    
+    /* =====================================
+       MODAL DE INICIO DE SESIÓN (CON ANIMACIÓN FADE‑IN)
+       ===================================== */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.3);
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s;
+    }
+    .modal-content {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+      text-align: center;
+      color: #333;
+    }
+    .modal-content .close {
+      color: #333;
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .modal-content h2 {
+      color: #FF00FF;
+    }
+    .modal-content form input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+    .modal-content form button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #FF00FF;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .modal-content form button:hover {
+      background-color: #E600E6;
+    }
+    .modal-content .social-login .google-btn {
+      background-color: #DB4437;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: background-color 0.3s;
+    }
+    .modal-content .social-login .google-btn:hover {
+      background-color: #C33D2E;
+    }
+    
+    /* =====================================
+       BOTÓN VOLVER ARRIBA
+       ===================================== */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      transition: background-color 0.3s;
+    }
+    #backToTop:hover {
+      background-color: var(--hover-color);
+    }
+    
+    /* =====================================
+       RESPONSIVIDAD
+       ===================================== */
+    @media (max-width: 1024px) {
+      .card { width: 90%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Enlace para saltar a contenido -->
+  <a href="#listings" class="skip-link">Saltar a contenido</a>
+  
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="Logo/logo.png" alt="Pepe'sGames Logo">
+    </div>
+    <div class="title">Pepe'sGames</div>
+    <div class="header-buttons">
+      <button onclick="openLoginModal()">Cuenta</button>
+      <button id="modeToggle" onclick="toggleDarkMode()">
+        <img id="modeToggleImg" src="https://cdn-icons-png.flaticon.com/512/869/869869.png" alt="Modo Oscuro">
+      </button>
+    </div>
+  </header>
+  
+  <!-- NAVEGACIÓN -->
+  <nav>
+    <a href="/Pagina/Home/index.html" class="menu-item">Home</a>
+    <a href="/Pagina/Tienda/Index.html" class="menu-item">Tienda</a>
+    <a href="/Pagina/Biblioteca/Codigo html Pepe_s Game.html" class="menu-item">Biblioteca</a>
+    <a href="/Pagina/Atención al cliente/index.html" class="menu-item">Atención al Cliente</a>
+  </nav>
+  
+  <!-- CONTENEDOR PRINCIPAL CON BUSCADOR Y TARJETAS -->
+  <div class="container" id="listings">
+    <h2>Videojuegos Seminuevos Disponibles</h2>
+    <!-- Buscador -->
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Buscar videojuegos...">
+    </div>
+    <!-- Tarjetas de Producto -->
+    <div class="cards-container">
+      <div class="card">
+        <img src="images/mario_kart.jpg" alt="Mario Kart Deluxe">
+        <h3>Mario Kart Deluxe</h3>
+        <p>Precio: 25€</p>
+      </div>
+      <div class="card">
+        <img src="images/cod.jpg" alt="Call of Duty: Modern Warfare">
+        <h3>Call of Duty: Modern Warfare</h3>
+        <p>Precio: 40€</p>
+      </div>
+      <div class="card">
+        <img src="images/zelda.jpg" alt="The Legend of Zelda: Breath of the Wild">
+        <h3>The Legend of Zelda: Breath of the Wild</h3>
+        <p>Precio: 30€</p>
+      </div>
+      <div class="card">
+        <img src="images/gta_v.jpg" alt="Grand Theft Auto V">
+        <h3>Grand Theft Auto V</h3>
+        <p>Precio: 20€</p>
+      </div>
+      <div class="card">
+        <img src="images/fifa_23.jpg" alt="FIFA 23">
+        <h3>FIFA 23</h3>
+        <p>Precio: 35€</p>
+      </div>
+      <div class="card">
+        <img src="images/minecraft.jpg" alt="Minecraft">
+        <h3>Minecraft</h3>
+        <p>Precio: 25€</p>
+      </div>
+      <div class="card">
+        <img src="images/dark_souls.jpg" alt="Dark Souls III">
+        <h3>Dark Souls III</h3>
+        <p>Precio: 20€</p>
+      </div>
+      <div class="card">
+        <img src="images/horizon_west.jpg" alt="Horizon Forbidden West">
+        <h3>Horizon Forbidden West</h3>
+        <p>Precio: 45€</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 PEPE'S GAME - Compra y vende videojuegos seminuevos con seguridad.</p>
+  </footer>
+  
+  <!-- Botón para volver a la Página Principal -->
+  <div style="margin: 20px;">
+    <button id="backButton" onclick="window.location.href='index.html'">Volver a la Página Principal</button>
+  </div>
+  
+  <!-- Botón "Volver arriba" -->
+  <button id="backToTop" aria-label="Volver al inicio">&#8593;</button>
+  
+  <!-- Modal de Inicio de Sesión -->
+  <div class="modal" id="modal-login" role="dialog" aria-labelledby="modalLoginLabel" aria-modal="true">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginModal()">&times;</span>
+      <h2 id="modalLoginLabel">Iniciar sesión</h2>
+      <form action="#">
+        <input type="email" id="email" placeholder="Correo electrónico" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <button type="submit">Iniciar sesión</button>
+      </form>
+      <div class="social-login">
+        <div class="google-btn" onclick="googleLogin()">Iniciar sesión con Google</div>
+      </div>
+      <p><a href="#">¿Olvidaste tu contraseña?</a></p>
+      <p><a href="#">Crear cuenta</a></p>
+    </div>
+  </div>
+  
+  <!-- Modal de Detalle de Producto -->
+  <div class="modal" id="modal-product" role="dialog" aria-labelledby="modalProductLabel" aria-modal="true">
+    <div class="modal-content">
+      <span class="close" onclick="closeProductModal()">&times;</span>
+      <h2 id="modalProductLabel">Detalle del Producto</h2>
+      <div id="productDetailContent"></div>
+      <button onclick="closeProductModal()">Cerrar</button>
+    </div>
+  </div>
+    
+  <!-- =====================================
+       SCRIPTS
+       ===================================== -->
+  <script>
+    // Funciones para el Modal de Inicio de Sesión
+    function openLoginModal() {
+      document.getElementById("modal-login").style.display = "flex";
+    }
+    function closeLoginModal() {
+      document.getElementById("modal-login").style.display = "none";
+    }
+    function googleLogin() {
+      alert('Iniciar sesión con Google no está implementado en este momento.');
+    }
+    
+    // Función para alternar el modo oscuro/ligero
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+      const modeToggleImg = document.getElementById("modeToggleImg");
+      if (document.body.classList.contains("dark-mode")) {
+        modeToggleImg.src = "https://cdn-icons-png.flaticon.com/512/1164/1164954.png";
+        modeToggleImg.alt = "Modo Claro";
+      } else {
+        modeToggleImg.src = "https://cdn-icons-png.flaticon.com/512/869/869869.png";
+        modeToggleImg.alt = "Modo Oscuro";
+      }
+    }
+    
+    // Botón "Volver arriba"
+    const backToTopButton = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.style.display = "flex";
+      } else {
+        backToTopButton.style.display = "none";
+      }
+    });
+    backToTopButton.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    
+    // Función de búsqueda: filtra las tarjetas según el texto
+    document.getElementById("searchInput").addEventListener("input", function() {
+      const filter = this.value.toLowerCase();
+      document.querySelectorAll(".card").forEach(card => {
+        const title = card.querySelector("h3").innerText.toLowerCase();
+        if (title.includes(filter)) {
+          card.style.display = "inline-block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+    
+    // Modal de Detalle de Producto
+    function openProductModal(title, price) {
+      const content = document.getElementById("productDetailContent");
+      content.innerHTML = `<p><strong>${title}</strong></p>
+                           <p>Precio: ${price}</p>
+                           <p>Descripción: Este videojuego es una excelente opción para los amantes del entretenimiento digital. ¡Descúbrelo!</p>`;
+      document.getElementById("modal-product").style.display = "flex";
+    }
+    function closeProductModal() {
+      document.getElementById("modal-product").style.display = "none";
+    }
+    
+    // Asignar evento para abrir el modal de detalle cuando se haga clic en una tarjeta
+    document.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("click", function(e) {
+        // Evita abrir el detalle si se hace clic en elementos internos que tengan otros eventos (como botones, pero aquí no los tenemos)
+        const title = card.querySelector("h3").innerText;
+        const price = card.querySelector("p").innerText;
+        openProductModal(title, price);
+      });
+    });
+  </script>
+</body>
+</html>

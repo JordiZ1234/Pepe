@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atención al Cliente - PEPE'S GAMES</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8fbff;
+    }
+    header {
+      background-image: url('atencio2.jpeg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center -140px; /* Mueve la imagen más abajo */
+      background-color: #004173; /* Fondo azul en las áreas no cubiertas */
+      color: white;
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 3.6em;
+      font-weight: bold;
+      color: white;
+      text-transform: uppercase;
+    }
+    /* Estilos para la barra de navegación convertida en enlaces que se ven como botones */
+    nav.menu {
+      margin-top: 15px;
+    }
+    nav a.menu-item {
+      background-color: #007bff; /* Azul profesional */
+      color: #ffffff;
+      text-decoration: none; /* Elimina el subrayado */
+      display: inline-block; /* Permite añadir padding y márgenes */
+      padding: 15px 25px; /* Botones más grandes */
+      border-radius: 6px;
+      margin: 0 10px;
+      font-size: 1.2em;
+      transition: background-color 0.3s ease;
+    }
+    nav a.menu-item:hover {
+      background-color: #0056b3;
+    }
+    .container {
+      width: 60%;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #e0e0e0; /* Color gris claro */
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    h2 {
+      color: white;
+      padding: 20px;
+      background-color: #0979b0; /* Fondo del título */
+      text-align: center;
+      font-size: 2em;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    /* Fuente Calibri para el título y formulario */
+    h2, label, input, select, textarea, button {
+      font-family: Calibri, sans-serif;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      font-size: 1.1em;
+      color: #555;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #0979b0;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+    }
+    textarea {
+      resize: vertical;
+      height: 150px;
+    }
+    button {
+      background-color: #28a745;
+      color: rgb(255, 255, 255);
+      padding: 10px 20px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    /* Estilos para las secciones de preguntas frecuentes */
+    .seccion-preguntas {
+      background-color: #f9f9f9;
+      padding: 30px 20px;
+      margin-top: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .seccion-preguntas h3 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .pregunta, .respuesta {
+      font-family: Calibri, sans-serif;
+    }
+    .pregunta {
+      font-weight: bold;
+      margin-top: 20px;
+      background-color: #e2e2e2;
+      padding: 25px;
+      border-radius: 5px;
+      color: #333;
+      font-size: 1.1em;
+      margin-bottom: 15px;
+    }
+    .respuesta {
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 5px;
+      color: #333;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+    /* Efecto hover para preguntas y respuestas */
+    .pregunta, .respuesta {
+      transition: transform 0.3s ease-in-out;
+    }
+    .pregunta:hover, .respuesta:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Atención al Cliente - PEPE'S GAMES</h1>
+    <nav class="menu">
+      <a href="/Pagina/home/index.html" class="menu-item">Home</a>
+      <a href="/Pagina/Tienda/index.html" class="menu-item">Tienda</a>
+      <a href="/Pagina/Biblioteca/Codigo html Pepe_s Game.html" class="menu-item">Biblioteca</a>
+      <a href="/Pagina/Segunda mano/index.html" class="menu-item">Segunda Mano</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>¿En qué podemos ayudarte?</h2>
+    <form action="/enviar-informe" method="POST">
+      <!-- Sección para ingresar el correo electrónico del cliente -->
+      <div class="form-group">
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" placeholder="Tu correo electrónico" required>
+      </div>
+
+      <!-- Sección para seleccionar el tipo de problema -->
+      <div class="form-group">
+        <label for="problema">Selecciona el tipo de problema:</label>
+        <select id="problema" name="problema" required>
+          <option value="error-juego">Error en el juego</option>
+          <option value="problema-pago">Problema con el pago</option>
+          <option value="cuenta-bloqueada">Cuenta bloqueada</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+
+      <!-- Sección para enviar el informe o mensaje -->
+      <div class="form-group">
+        <label for="mensaje">Describe el problema o tu consulta:</label>
+        <textarea id="mensaje" name="mensaje" required></textarea>
+      </div>
+
+      <!-- Botón para enviar el formulario -->
+      <button type="submit">Enviar Informe</button>
+    </form>
+  </div>
+
+  <!-- Sección de problemas comunes -->
+  <div class="seccion-preguntas">
+    <h3>Problemas Comunes y Preguntas Frecuentes</h3>
+
+    <div class="pregunta">¿Por qué me aparece un error al iniciar el juego?</div>
+    <div class="respuesta">
+      Este error puede ocurrir por diversas razones, como problemas con la conexión a Internet, archivos del juego dañados o configuraciones incompatibles. Intenta reiniciar el juego o actualizarlo a la última versión. Si el problema persiste, contacta con soporte técnico.
+    </div>
+
+    <div class="pregunta">¿Qué hago si no puedo realizar el pago de mi suscripción?</div>
+    <div class="respuesta">
+      Si tienes problemas con el pago, verifica que tu tarjeta esté activa y que no haya errores con la información ingresada. También revisa tu conexión a Internet. Si el problema persiste, puedes ponerte en contacto con nuestro equipo de soporte para más asistencia.
+    </div>
+
+    <div class="pregunta">¿Mi cuenta fue bloqueada sin razón? ¿Qué puedo hacer?</div>
+    <div class="respuesta">
+      Las cuentas pueden ser bloqueadas por infracciones de los términos de servicio, como el uso de trucos o la manipulación del juego. Si crees que el bloqueo fue un error, por favor, envíanos un informe detallado y revisaremos tu caso.
+    </div>
+
+    <div class="pregunta">¿Cómo puedo recuperar mi cuenta si olvidé mi contraseña?</div>
+    <div class="respuesta">
+      Si has olvidado tu contraseña, dirígete a la página de inicio de sesión y haz clic en "¿Olvidaste tu contraseña?". Se enviará un enlace de recuperación a tu correo electrónico registrado.
+    </div>
+
+    <div class="pregunta">¿Cómo reporto un error técnico o un bug en el juego?</div>
+    <div class="respuesta">
+      Puedes utilizar el formulario de atención al cliente en esta página para describir el error que estás experimentando. Asegúrate de proporcionar detalles como el momento en que ocurrió el problema y los pasos previos al error para ayudarnos a identificarlo rápidamente.
+    </div>
+  </div>
+
+  <!-- Sección de Cambios y Reembolsos -->
+  <div class="seccion-preguntas">
+    <h3>¿Necesitas Cambiar o Devolver tu Producto?</h3>
+
+    <div class="pregunta">¿Puedo cambiar un producto después de comprarlo?</div>
+    <div class="respuesta">
+      Si el producto no es lo que esperabas o deseas cambiarlo, puedes hacerlo dentro de los 30 días posteriores a la compra, siempre que esté en su estado original. Contacta con nosotros para gestionar el cambio.
+    </div>
+
+    <div class="pregunta">¿Cómo solicito un reembolso?</div>
+    <div class="respuesta">
+      Si el producto que adquiriste no funciona correctamente o tiene problemas técnicos, puedes solicitar un reembolso dentro de los primeros 14 días. Asegúrate de que el producto no haya sido descargado o usado para que sea válido el reembolso.
+    </div>
+
+    <div class="pregunta">¿Existen condiciones especiales para reembolsos?</div>
+    <div class="respuesta">
+      Para casos especiales, como compras erróneas o problemas durante el proceso de pago, por favor, contacta con nuestro equipo de soporte. Estamos aquí para ayudarte a resolver cualquier inconveniente.
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- METADATOS Y CONFIGURACIÓN -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pepe's Game - La biblioteca profesional de videojuegos. Descubre, explora y contáctanos para disfrutar de lo mejor en videojuegos.">
+  <meta property="og:title" content="Pepe's Game - Biblioteca Profesional de Videojuegos">
+  <meta property="og:description" content="Descubre la mejor biblioteca de videojuegos, lee testimonios y contáctanos.">
+  <meta property="og:image" content="hero_background.jpg">
+  <meta property="og:url" content="https://tododigitalshop.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Pepe's Game - Biblioteca Profesional de Videojuegos</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+  
+  <!-- CSS - ESTILOS -->
+  <style>
+    /* VARIABLES Y CONFIGURACIONES */
+    :root {
+      --primary: #007bff;
+      --primary-dark: #183e66;
+      --secondary: #004080;
+      --white: #ffffff;
+      --light-bg: #f8f9fa;
+      --text-color: #333;
+      --gray: #666;
+      --font-family: 'Roboto', sans-serif;
+      --transition-speed: 0.3s;
+    }
+    /* Modo oscuro */
+    body.dark {
+      --primary: #0d6efd;
+      --primary-dark: #0a58ca;
+      --secondary: #343a40;
+      --white: #f8f9fa;
+      --light-bg: #212529;
+      --text-color: #f8f9fa;
+      --gray: #adb5bd;
+    }
+    /* RESET y ESTILOS GLOBALES */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: var(--font-family);
+      line-height: 1.6;
+      background-color: var(--light-bg);
+      color: var(--text-color);
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+    }
+    /* PRELOADER */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--light-bg);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.5s ease-out;
+    }
+    #preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #preloader::after {
+      content: "";
+      width: 50px;
+      height: 50px;
+      border: 5px solid var(--primary);
+      border-top: 5px solid var(--white);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    /* BARRA DE PROGRESO SCROLL */
+    #progressBarContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 2000;
+    }
+    #progressBar {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width var(--transition-speed);
+    }
+    /* ENCABEZADO */
+    header {
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      color: var(--white);
+      text-align: center;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      font-size: 1.2rem;
+    }
+    /* Enlace "Cuenta" en el encabezado, sin target="_blank" para cargar en la misma pestaña */
+    header .account-info {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+    }
+    header .account-info .icon {
+      margin-right: 5px;
+      font-size: 1.2rem;
+    }
+    /* NAVEGACIÓN */
+    nav {
+      background-color: var(--secondary);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 1rem;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--white);
+    }
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      transition: transform var(--transition-speed);
+    }
+    .nav-menu li {
+      margin: 0 1rem;
+    }
+    .nav-menu a {
+      padding: 0.7rem 1rem;
+      border-radius: 5px;
+      transition: background-color var(--transition-speed);
+      color: var(--white);
+    }
+    .nav-menu a:hover,
+    .nav-menu a:focus {
+      background-color: var(--primary-dark);
+    }
+    /* BOTÓN HAMBURGUESA */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .hamburger span {
+      height: 3px;
+      width: 25px;
+      background-color: var(--white);
+      margin-bottom: 4px;
+      border-radius: 5px;
+      transition: all var(--transition-speed);
+    }
+    /* BOTÓN MODO OSCURO/CLARO */
+    #themeToggleBtn {
+      background: none;
+      border: 2px solid var(--white);
+      border-radius: 50%;
+      color: var(--white);
+      padding: 0.3rem;
+      cursor: pointer;
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+    }
+    #themeToggleBtn:hover,
+    #themeToggleBtn:focus {
+      background-color: var(--white);
+      color: var(--secondary);
+    }
+    /* SECCIÓN HERO */
+    .hero {
+      background-image: url('hero_background.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      text-align: center;
+      color: var(--white);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .hero h2 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+    }
+    /* El botón "Explorar ahora" abre juegos.html en una nueva pestaña */
+    .hero a button {
+      padding: 0.8rem 1.6rem;
+      background-color: var(--primary);
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color var(--transition-speed);
+      color: var(--white);
+    }
+    .hero a button:hover,
+    .hero a button:focus {
+      background-color: var(--primary-dark);
+    }
+    /* CONTENEDOR PRINCIPAL */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    section {
+      margin-bottom: 3rem;
+    }
+    section h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--secondary);
+      font-size: 2rem;
+    }
+    /* OTRAS SECCIONES */
+    .search-container {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .search-container input {
+      padding: 0.7rem;
+      width: 80%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      transition: border-color var(--transition-speed);
+    }
+    .search-container input:focus {
+      border-color: var(--primary);
+    }
+    .game-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .game-card {
+      background-color: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+      cursor: pointer;
+      position: relative;
+    }
+    .game-card:hover,
+    .game-card:focus-within {
+      transform: scale(1.03);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .game-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    .game-card .info {
+      padding: 1rem;
+      text-align: center;
+    }
+    .game-card h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.4rem;
+      color: var(--primary-dark);
+    }
+    .game-card p {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    .like-container {
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .like-button {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: transform var(--transition-speed);
+    }
+    .like-button:hover {
+      transform: scale(1.2);
+    }
+    .like-count {
+      margin-left: 0.3rem;
+      font-weight: bold;
+    }
+    .game-card.sackboy a.sackboy-placeholder {
+      display: block;
+      text-decoration: none;
+    }
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: 1rem;
+    }
+    .modal-content {
+      background: var(--white);
+      border-radius: 10px;
+      max-width: 600px;
+      width: 100%;
+      padding: 2rem;
+      position: relative;
+      animation: fadeIn 0.5s ease-out;
+      outline: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .testimonial {
+      max-width: 700px;
+      margin: 1rem auto;
+      padding: 1.5rem;
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      font-style: italic;
+      color: #555;
+      border-left: 4px solid var(--primary);
+    }
+    .testimonial h4 {
+      text-align: right;
+      margin-top: 0.5rem;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+    .contact form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1rem;
+    }
+    .contact input,
+    .contact textarea {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      outline: none;
+      font-size: 1rem;
+      transition: border-color var(--transition-speed);
+    }
+    .contact input:focus,
+    .contact textarea:focus {
+      border-color: var(--primary);
+    }
+    .contact input::placeholder,
+    .contact textarea::placeholder {
+      color: #aaa;
+    }
+    .contact button {
+      padding: 0.8rem;
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color var(--transition-speed);
+    }
+    .contact button:hover,
+    .contact button:focus {
+      background-color: var(--primary-dark);
+    }
+    footer {
+      background-color: var(--secondary);
+      color: var(--white);
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+    footer p {
+      font-size: 0.9rem;
+    }
+    footer .social a {
+      margin: 0 0.5rem;
+      font-size: 1.5rem;
+      color: var(--white);
+      transition: color var(--transition-speed);
+    }
+    footer .social a:hover {
+      color: var(--primary);
+    }
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: none;
+      background-color: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 2rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity var(--transition-speed), background-color var(--transition-speed);
+      z-index: 1000;
+    }
+    #scrollToTopBtn:hover {
+      opacity: 1;
+      background-color: var(--primary-dark);
+    }
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+      .hero h2 {
+        font-size: 2rem;
+      }
+      .nav-menu {
+        flex-direction: column;
+        transform: translateY(-100%);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: var(--secondary);
+        width: 200px;
+        transition: transform var(--transition-speed);
+      }
+      .nav-menu.active {
+        transform: translateY(0);
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- PRELOADER -->
+  <div id="preloader"></div>
+  
+  <!-- BARRA DE PROGRESO -->
+  <div id="progressBarContainer">
+    <div id="progressBar"></div>
+  </div>
+  
+  <!-- ENCABEZADO -->
+  <header role="banner">
+    <!-- Al hacer clic en "Cuenta", se carga la página de creación de cuenta en la misma pestaña -->
+    <a href="crear-cuenta.html" class="account-info">
+      <span class="icon">👤</span>
+      <span class="text">Cuenta</span>
+    </a>
+    <h1>Pepe's Game</h1>
+    <p>La biblioteca profesional de videojuegos que estabas esperando</p>
+  </header>
+  
+  <!-- NAVEGACIÓN -->
+  <nav role="navigation">
+    <div class="nav-container">
+      <div class="nav-logo">Pepe's Game</div>
+      <button id="themeToggleBtn" aria-label="Cambiar modo oscuro/claro">🌙</button>
+      <div class="hamburger" id="hamburger" aria-label="Menú" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-menu" id="navMenu">
+        <a href="/Pagina/home/index.html" class="menu-item">Home</a>
+        <a href="/Pagina/Tienda/index.html" class="menu-item">Tienda</a>
+        <a href="/Pagina/Segunda mano/index.html" class="menu-item">Segunda Mano</a>
+        <a href="/Pagina/Atención al cliente/index.html" class="menu-item">Atención al Cliente</a>
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- CONTENIDO PRINCIPAL -->
+  <main role="main">
+    <!-- SECCIÓN HERO: El botón "Explorar ahora" abre juegos.html en nueva pestaña -->
+    <section class="hero fade-in" id="inicio">
+      <div class="hero-content">
+        <h2>¡Descubre los mejores videojuegos!</h2>
+        <a href="juegos.html" target="_blank" rel="noopener noreferrer">
+          <button type="button">Explorar ahora</button>
+        </a>
+      </div>
+    </section>
+    
+    <!-- SECCIÓN JUEGOS -->
+    <section id="juegos" class="fade-in">
+      <h2>Catálogo de Juegos</h2>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Buscar juego..." aria-label="Buscar juego">
+      </div>
+      <div class="game-list" id="gameList">
+        <div class="game-card" tabindex="0" data-title="Juego 1" data-description="Aventura épica llena de emoción y acción.">
+          <img src="juego1.jpg" alt="Juego 1" loading="lazy">
+          <div class="info">
+            <h3>Juego 1</h3>
+            <p>Aventura épica llena de emoción.</p>
+            <div class="like-container">
+              <button class="like-button" role="button" aria-label="Me gusta">👍</button>
+              <span class="like-count">0</span>
+            </div>
+          </div>
+        </div>
+        <div class="game-card" tabindex="0" data-title="Juego 2" data-description="Acción sin límites y gráficos impresionantes.">
+          <img src="juego2.jpg" alt="Juego 2" loading="lazy">
+          <div class="info">
+            <h3>Juego 2</h3>
+            <p>Acción sin límites y gráficos impresionantes.</p>
+            <div class="like-container">
+              <button class="like-button" role="button" aria-label="Me gusta">👍</button>
+              <span class="like-count">0</span>
+            </div>
+          </div>
+        </div>
+        <div class="game-card sackboy" tabindex="0" data-title="Sackboy: Una aventura a lo grande" data-description="Conviértete en Sackboy y vive una aventura a lo grande en PlayStation.">
+          <a href="/es-es/games/sackboy-a-big-adventure/" class="sackboy-placeholder">
+            <div class="game-grid-v2-tile__keyart">
+              <div class="media-block media-block--image" data-src="https://gmedia.playstation.com/is/image/SIEPDC/Sackboy-a-big-adventure-thumbnail-01-ps4-en-12nov20">
+                <div class="media-block__inner">
+                  <figure class="media-block__figure">
+                    <picture>
+                      <source srcset="https://gmedia.playstation.com/is/image/SIEPDC/Sackboy-a-big-adventure-thumbnail-01-ps4-en-12nov20?$1200px$" media="(min-width: 768px)">
+                      <source srcset="https://gmedia.playstation.com/is/image/SIEPDC/Sackboy-a-big-adventure-thumbnail-01-ps4-en-12nov20?$800px$" media="(min-width: 320px)">
+                      <noscript>
+                        <img src="https://gmedia.playstation.com/is/image/SIEPDC/Sackboy-a-big-adventure-thumbnail-01-ps4-en-12nov20?$100px$" alt="Sackboy: Una aventura a lo grande">
+                      </noscript>
+                      <img src="https://gmedia.playstation.com/is/image/SIEPDC/Sackboy-a-big-adventure-thumbnail-01-ps4-en-12nov20?$800px$" alt="Sackboy: Una aventura a lo grande" loading="lazy">
+                    </picture>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="game-grid-v2-tile__content">
+              <div class="game-grid-v2-tile__title">
+                <p>Sackboy: Una aventura a lo grande</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- SECCIÓN TIENDA -->
+    <section id="tienda" class="fade-in">
+      <h2>Tienda</h2>
+      <p>Explora nuestra tienda para encontrar los juegos más increíbles y ofertas exclusivas.</p>
+      <button onclick="window.location.href='tienda.html'">Ir a la Tienda</button>
+    </section>
+    
+    <!-- SECCIÓN VALORACIONES -->
+    <section id="valoraciones" class="fade-in">
+      <h2>Valoraciones</h2>
+      <p>Mira lo que dicen nuestros usuarios sobre los juegos y la plataforma.</p>
+      <button onclick="window.location.href='valoraciones.html'">Ver Valoraciones</button>
+    </section>
+    
+    <!-- SECCIÓN COMPRA Y VENTA -->
+    <section id="compra-venta" class="fade-in">
+      <h2>Compra y Venta</h2>
+      <p>Compra y vende tus juegos favoritos en nuestro marketplace.</p>
+      <button onclick="window.location.href='compra-venta.html'">Acceder a Compra y Venta</button>
+    </section>
+    
+    <!-- SECCIÓN ATENCIÓN AL CLIENTE -->
+    <section id="atencion-cliente" class="fade-in">
+      <h2>Atención al Cliente</h2>
+      <p>Estamos disponibles para ayudarte. Contacta con nuestro servicio de atención al cliente.</p>
+      <button onclick="window.location.href='atencion-cliente.html'">Ir a Atención al Cliente</button>
+    </section>
+    
+    <!-- SECCIÓN TESTIMONIOS -->
+    <section id="testimonios" class="fade-in">
+      <h2>Testimonios</h2>
+      <div class="testimonial">
+        <p>"Pepe's Game me ayudó a encontrar los mejores juegos para toda mi familia."</p>
+        <h4>- Laura G.</h4>
+      </div>
+      <div class="testimonial">
+        <p>"El diseño de la biblioteca es increíble, ¡volveré pronto!"</p>
+        <h4>- Carlos T.</h4>
+      </div>
+    </section>
+    
+    <!-- SECCIÓN CONTACTO -->
+    <section id="contacto" class="contact fade-in">
+      <h2>Contáctanos</h2>
+      <form action="#" method="post" aria-label="Formulario de contacto">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+        <label for="email">Correo Electrónico:</label>
+        <input type="email" id="email" name="email" placeholder="tu@correo.com" required>
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" name="mensaje" rows="4" placeholder="Escribe tu mensaje aquí" required></textarea>
+        <button type="submit">Enviar Mensaje</button>
+      </form>
+    </section>
+  </main>
+  
+  <!-- PIE DE PÁGINA -->
+  <footer role="contentinfo">
+    <p>&copy; 2025 Pepe's Game. Todos los derechos reservados.</p>
+    <div class="social">
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook">📘</a>
+      <a href="https://twitter.com" target="_blank" aria-label="Twitter">🐦</a>
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram">📸</a>
+    </div>
+  </footer>
+  
+  <!-- BOTÓN "VOLVER ARRIBA" -->
+  <button id="scrollToTopBtn" aria-label="Volver al inicio">↑</button>
+  
+  <!-- MODAL DE VIDEOJUEGOS -->
+  <div class="modal" id="gameModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+    <div class="modal-content" tabindex="-1">
+      <button class="modal-close" aria-label="Cerrar modal">&times;</button>
+      <h3 id="modalTitle">Título del Juego</h3>
+      <p id="modalDescription">Descripción detallada del juego.</p>
+    </div>
+  </div>
+  
+  <!-- JAVASCRIPT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Preloader
+      const preloader = document.getElementById('preloader');
+      window.addEventListener('load', () => {
+        preloader.classList.add('hidden');
+      });
+      
+      // Modo oscuro/claro
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        themeToggleBtn.textContent = '☀️';
+      }
+      themeToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        if (document.body.classList.contains('dark')) {
+          themeToggleBtn.textContent = '☀️';
+          localStorage.setItem('theme', 'dark');
+        } else {
+          themeToggleBtn.textContent = '🌙';
+          localStorage.setItem('theme', 'light');
+        }
+      });
+      
+      // Menú hamburguesa para móviles
+      const hamburger = document.getElementById('hamburger');
+      const navMenu = document.getElementById('navMenu');
+      hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', !expanded);
+      });
+      
+      // Botón "Volver arriba" y barra de progreso
+      const scrollBtn = document.getElementById('scrollToTopBtn');
+      const progressBar = document.getElementById('progressBar');
+      window.addEventListener('scroll', () => {
+        const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        progressBar.style.width = scrolled + "%";
+        scrollBtn.style.display = winScroll > 300 ? 'block' : 'none';
+      });
+      scrollBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      
+      // Animaciones: Fade-In con Intersection Observer
+      const faders = document.querySelectorAll('.fade-in');
+      const appearOptions = { threshold: 0.25, rootMargin: "0px 0px -50px 0px" };
+      const appearOnScroll = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        });
+      }, appearOptions);
+      faders.forEach(fader => appearOnScroll.observe(fader));
+      
+      // Modal para detalles de videojuegos
+      const gameCards = document.querySelectorAll('.game-card');
+      const modal = document.getElementById('gameModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalDescription = document.getElementById('modalDescription');
+      const modalClose = document.querySelector('.modal-close');
+      
+      const openModal = (title, description) => {
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+        modal.querySelector('.modal-content').focus();
+      };
+      
+      const closeModal = () => {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+      };
+      
+      gameCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const title = card.getAttribute('data-title');
+          const description = card.getAttribute('data-description');
+          openModal(title, description);
+        });
+      });
+      modalClose.addEventListener('click', closeModal);
+      window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+          closeModal();
+        }
+      });
+      
+      // Buscador de videojuegos (debounce)
+      const searchInput = document.getElementById('searchInput');
+      const debounce = (func, delay) => {
+        let timeout;
+        return function(...args) {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+      };
+      
+      const filterGames = () => {
+        const filter = searchInput.value.toLowerCase();
+        gameCards.forEach(card => {
+          const title = card.getAttribute('data-title').toLowerCase();
+          card.style.display = title.includes(filter) ? '' : 'none';
+        });
+      };
+      
+      searchInput.addEventListener('keyup', debounce(filterGames, 300));
+      
+      // Botones "Me gusta"
+      const likeButtons = document.querySelectorAll('.like-button');
+      likeButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const countSpan = btn.nextElementSibling;
+          let count = parseInt(countSpan.textContent);
+          countSpan.textContent = ++count;
+          btn.style.transform = 'scale(1.4)';
+          setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
+          btn.title = "Dale me gusta";
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+

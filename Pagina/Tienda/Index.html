@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tienda de Videojuegos | Pepe's Games</title>
+  <meta name="description" content="Tienda de videojuegos profesional con ofertas, novedades y promociones, desarrollada bajo buenas prácticas de semántica y accesibilidad." />
+
+  <!-- Tipografías -->
+  <!-- Kanit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* --- Keyframes y Animaciones Extras --- */
+    @keyframes ripple {
+      from { transform: scale(0); opacity: 0.8; }
+      to { transform: scale(4); opacity: 0; }
+    }
+    .ripple-effect {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      background-color: rgba(255,255,255,0.7);
+      pointer-events: none;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes tilt {
+      0% { transform: perspective(500px) rotateX(0deg) rotateY(0deg); }
+      50% { transform: perspective(500px) rotateX(2deg) rotateY(2deg); }
+      100% { transform: perspective(500px) rotateX(0deg) rotateY(0deg); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
+    
+    /* --- Variables CSS --- */
+    :root {
+      --primary-color: #8a2be2; /* Color primario actualizado */
+      --secondary-color: #ff1493;
+      --bg-light: #fefaff;
+      --bg-dark: #121212;
+      --text-light: #333;
+      --text-dark: #e0e0e0;
+      --modal-bg: rgba(0,0,0,0.5);
+      --hero-gradient: linear-gradient(-45deg, #eaeaea, #fefaff, #ffecec, #ffd1ff);
+    }
+    
+    /* --- Reset y Estilos Básicos --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      /* Usamos Kanit de forma global */
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.9em;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    :focus { outline: 2px solid var(--secondary-color); outline-offset: 2px; }
+    
+    /* --- Botones con animación --- */
+    button {
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    button:hover {
+      animation: pulse 0.5s linear;
+    }
+    
+    /* --- Encabezado Sticky --- */
+    header {
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 0.5em 2em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: fadeInUp 1s;
+    }
+    .header-left img { width: 150px; aspect-ratio: 3/2; }
+    .header-center h1 {
+      font-size: 2.5em;
+      font-weight: bold;
+      text-align: center;
+      flex-grow: 1;
+      transition: transform 0.3s ease;
+    }
+    .header-center h1:hover { animation: pulse 1s infinite; }
+    .header-right { display: flex; gap: 15px; align-items: center; }
+    .header-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-button:hover { transform: scale(1.1); }
+    .header-button img { width: 30px; height: 30px; }
+    #cart-count {
+      background-color: var(--secondary-color);
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.8em;
+      position: relative;
+      top: -10px;
+      left: -10px;
+    }
+    
+    /* --- Navegación inferior --- */
+    nav.bottom-links {
+      background-color: var(--primary-color);
+      text-align: center;
+      padding: 0.3cm 0;
+      animation: fadeInUp 1s;
+    }
+    nav.bottom-links a {
+      display: inline-block;
+      background-color: #fff;
+      color: var(--primary-color);
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    nav.bottom-links a:hover { background-color: #ffe6f2; }
+    
+    /* --- Contenido Principal: Buscador, Filtros, Ordenar --- */
+    main {
+      padding: 20px 2cm;
+    }
+    .search-bar {
+      margin: 20px auto;
+      max-width: 800px;
+      display: flex;
+      justify-content: center;
+      animation: fadeInUp 1s;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid var(--primary-color);
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    .filters-container,
+    .sort-container {
+      width: 200px;
+      height: 30px;
+      background-color: #fff;
+      border: 2px solid var(--primary-color);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border-radius: 5px;
+      margin: 10px;
+      transition: border-color 0.3s;
+    }
+    .filters-container select,
+    .sort-container select {
+      width: 100%;
+      padding: 5px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: #fff;
+      color: #000;
+    }
+    
+    /* --- Contenedor de Juegos --- */
+    .game-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+      animation: fadeInUp 1s;
+    }
+    /* Tarjetas de Juego con efecto tilt y Quick View */
+    article.game-card {
+      position: relative;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    article.game-card:hover {
+      transform: scale(1.03) rotateX(2deg);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      animation: tilt 0.6s ease;
+    }
+    article.game-card .quick-view {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.2em;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 2;
+    }
+    article.game-card:hover .quick-view {
+      opacity: 1;
+      visibility: visible;
+    }
+    .image-container {
+      height: 450px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #f7f7f7;
+    }
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .image-container img:hover {
+      transform: scale(1.05);
+    }
+    .price-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 5px;
+      border-radius: 5px;
+      font-weight: bold;
+      z-index: 3;
+    }
+    .cart-square {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      background-color: #fff;
+      border: 2px solid var(--primary-color);
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      z-index: 3;
+    }
+    .cart-square:hover { background-color: #ffe6f2; }
+    .cart-square img {
+      width: 80%;
+      height: 80%;
+    }
+    .checkmark {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      color: green;
+      display: none;
+      transition: opacity 0.3s ease;
+      z-index: 4;
+    }
+    
+    /* --- Sección de Newsletter --- */
+    .newsletter {
+      padding: 40px 2cm;
+      background-color: #fff;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-top: 40px;
+      animation: fadeInUp 1s;
+    }
+    .newsletter h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+    .newsletter form {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .newsletter input {
+      padding: 10px;
+      width: 250px;
+      border: 2px solid var(--primary-color);
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    .newsletter button {
+      padding: 10px 20px;
+      background-color: var(--secondary-color);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .newsletter button:hover { background-color: var(--primary-color); }
+    
+    /* --- Sección de Testimonios --- */
+    .testimonials {
+      padding: 40px 2cm;
+      text-align: center;
+      animation: fadeInUp 1s;
+    }
+    .testimonials h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+    .testimonials-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .testimonial-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      width: 250px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .testimonial-card:hover { transform: scale(1.05); }
+    .testimonial-card p {
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    .testimonial-card h4 {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    /* --- Pie de Página --- */
+    footer {
+      background-color: var(--primary-color);
+      color: #fff;
+      text-align: center;
+      padding: 1cm 0;
+      margin-top: 40px;
+      animation: fadeInUp 1s;
+    }
+    .contact-box {
+      background-color: #fff;
+      color: var(--primary-color);
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 200px;
+      margin: 0 auto;
+      transition: background-color 0.3s ease;
+      border: none;
+    }
+    .contact-box:hover { background-color: #ffe6f2; }
+    /* Aquí se agregan los contactos de Pepe's Games */
+    .footer-contacts {
+      margin-top: 10px;
+    }
+    .footer-contacts p {
+      margin: 5px 0;
+      font-size: 0.9em;
+    }
+    .footer-contacts a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+    .footer-info {
+      margin-top: 1cm;
+      font-size: 0.9em;
+    }
+    
+    /* --- Modales --- */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: var(--modal-bg);
+      animation: fadeIn 0.3s;
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      animation: slideDown 0.4s ease-out;
+    }
+    .modal .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+    .modal-content h2 { text-align: center; margin-bottom: 20px; }
+    .modal-content form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .modal-content label { font-weight: bold; }
+    .modal-content input {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .modal-content button {
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .modal-content button:hover { background-color: var(--secondary-color); }
+    
+    /* --- Botón Volver Arriba --- */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      transition: background-color 0.3s;
+    }
+    #backToTop:hover { background-color: var(--secondary-color); }
+    
+    /* --- Animaciones para Revelar Elementos --- */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    
+    /* --- Secciones Ocultas --- */
+    .hidden-section { display: none; }
+    
+    /* --- Botón de Chat (Soporte) --- */
+    .chat-button {
+      position: fixed;
+      bottom: 90px;
+      right: 30px;
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      z-index: 250;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .chat-button:hover {
+      background-color: var(--secondary-color);
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Encabezado Sticky -->
+  <header class="reveal">
+    <div class="header-left">
+      <img src="Logo/logo.png" alt="Logo de Pepe's Games" />
+    </div>
+    <div class="header-center">
+      <h1>PEPE'S GAMES</h1>
+    </div>
+    <div class="header-right">
+      <button class="header-button" onclick="openModal('loginModal')" title="Iniciar Sesión" aria-label="Iniciar Sesión">
+        <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Icono Iniciar Sesión" />
+      </button>
+      <button class="header-button" id="modeToggle" onclick="toggleDarkMode()" title="Alternar Modo" aria-label="Alternar Modo Oscuro/Ligero">
+        <img src="https://cdn-icons-png.flaticon.com/512/869/869869.png" alt="Modo Oscuro" />
+      </button>
+      <button class="header-button" onclick="openModal('cartModal')" title="Ver Carrito" aria-label="Ver Carrito">
+        <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Icono Carrito" />
+        <span id="cart-count">0</span>
+      </button>
+    </div>
+  </header>
+  
+  <!-- Navegación inferior -->
+  <nav class="bottom-links reveal" aria-label="Navegación principal">
+    <a href="/Pagina/Home/index.html" class="menu-item">Home</a>
+    <a href="/Pagina/Biblioteca/Codigo html Pepe_s Game.html" class="menu-item">Biblioteca</a>
+    <a href="/Pagina/Segunda mano/index.html" class="menu-item">Segunda Mano</a>
+    <a href="/Pagina/Atención al cliente/index.html" class="menu-item">Atención al Cliente</a>
+  </nav>
+  
+  <!-- Contenido Principal -->
+  <main id="main" class="reveal">
+    <!-- Buscador, Filtros y Ordenar -->
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar..." aria-label="Buscar" />
+    </div>
+    <div class="filters-container">
+      <select aria-label="Opciones de filtro">
+        <option value="ninguno" selected>Ninguno</option>
+        <option value="accion">Acción</option>
+        <option value="decisiones">Decisiones</option>
+        <option value="aventura">Aventura</option>
+      </select>
+    </div>
+    <div class="sort-container">
+      <select aria-label="Ordenar juegos" id="sortSelect">
+        <option value="default" selected>Ordenar por</option>
+        <option value="precio-asc">Precio: menor a mayor</option>
+        <option value="precio-desc">Precio: mayor a menor</option>
+        <option value="alfabetico">Alfabético</option>
+      </select>
+    </div>
+
+    <!-- Contenedor de Productos -->
+    <section id="products" class="game-container reveal" aria-label="Listado de juegos">
+      <article class="game-card" data-title="Red Dead Redemption 2" data-price="59.99" data-genre="accion">
+        <div class="image-container">
+          <img src="https://m.media-amazon.com/images/I/71xnh5WM+GL.jpg" alt="Red Dead Redemption 2" loading="lazy" />
+        </div>
+        <div class="price-tag">$59.99</div>
+        <div class="quick-view">Quick View</div>
+        <button class="cart-square" onclick="toggleCartState(this, event)" aria-label="Agregar al carrito">
+          <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Icono carrito" />
+          <span class="checkmark">✔️</span>
+        </button>
+      </article>
+      <article class="game-card" data-title="Detroit Become Human" data-price="39.99" data-genre="decisiones">
+        <div class="image-container">
+          <img src="https://cdn1.epicgames.com/columbine/offer/DETROIT2-860x1148-a03ac8673f779b286dcccc83dbe75249.jpg" alt="Detroit Become Human" loading="lazy" />
+        </div>
+        <div class="price-tag">$39.99</div>
+        <div class="quick-view">Quick View</div>
+        <button class="cart-square" onclick="toggleCartState(this, event)" aria-label="Agregar al carrito">
+          <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Icono carrito" />
+          <span class="checkmark">✔️</span>
+        </button>
+      </article>
+      <article class="game-card" data-title="Ghost of Tsushima" data-price="49.99" data-genre="accion">
+        <div class="image-container">
+          <img src="https://s01.riotpixels.net/data/51/e6/51e6b451-df1e-48d7-a91a-40c63603291f.jpg/cover.ghost-of-tsushima.1100x1248.2020-06-22.43.jpg" alt="Ghost of Tsushima" loading="lazy" />
+        </div>
+        <div class="price-tag">$49.99</div>
+        <div class="quick-view">Quick View</div>
+        <button class="cart-square" onclick="toggleCartState(this, event)" aria-label="Agregar al carrito">
+          <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Icono carrito" />
+          <span class="checkmark">✔️</span>
+        </button>
+      </article>
+      <article class="game-card" data-title="The Last of Us: Part II" data-price="49.99" data-genre="aventura">
+        <div class="image-container">
+          <img src="https://th.bing.com/th/id/OIP.JlnTykuhz-iK63fOhfAhzQHaKS?rs=1&amp;pid=ImgDetMain" alt="The Last of Us: Part II" loading="lazy" />
+        </div>
+        <div class="price-tag">$49.99</div>
+        <div class="quick-view">Quick View</div>
+        <button class="cart-square" onclick="toggleCartState(this, event)" aria-label="Agregar al carrito">
+          <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Icono carrito" />
+          <span class="checkmark">✔️</span>
+        </button>
+      </article>
+      <article class="game-card" data-title="The Last of Us: Parte 1" data-price="49.99" data-genre="aventura">
+        <div class="image-container">
+          <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2023/09/the-last-of-us-part-1-cover-2-3.jpg?v=rlpc81" alt="The Last of Us: Parte 1" loading="lazy" />
+        </div>
+        <div class="price-tag">$49.99</div>
+        <div class="quick-view">Quick View</div>
+        <button class="cart-square" onclick="toggleCartState(this, event)" aria-label="Agregar al carrito">
+          <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Icono carrito" />
+          <span class="checkmark">✔️</span>
+        </button>
+      </article>
+      <article class="game-card" data-title="Marvel's Spider-Man" data-price="59.99" data-genre="accion">
+        <div class="image-container">
+          <img src="https://se-keys.com/wp-content/uploads/2022/11/or-marvel-s-spider-man-remastered-exon-1_1024x1024-1.webp" alt="Marvel's Spider-Man" loading="lazy" />
+        </div>
+        <div class="price-tag">$59.99</div>
+        <div class="quick-view">Quick View</div>
+        <button class="cart-square" onclick="toggleCartState(this, event)" aria-label="Agregar al carrito">
+          <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Icono carrito" />
+          <span class="checkmark">✔️</span>
+        </button>
+      </article>
+      <article class="game-card" data-title="Marvel’s Spider-Man: Miles Morales" data-price="59.99" data-genre="accion">
+        <div class="image-container">
+          <img src="https://s.pacn.ws/1/p/153/marvels-spiderman-miles-morales-739829.1.jpg?v=rlpc81" alt="Marvel’s Spider-Man: Miles Morales" loading="lazy" />
+        </div>
+        <div class="price-tag">$59.99</div>
+        <div class="quick-view">Quick View</div>
+        <button class="cart-square" onclick="toggleCartState(this, event)" aria-label="Agregar al carrito">
+          <img src="https://cdn-icons-png.flaticon.com/512/107/107831.png" alt="Icono carrito" />
+          <span class="checkmark">✔️</span>
+        </button>
+      </article>
+    </section>
+  </main>
+  
+  <!-- Sección de Newsletter -->
+  <section class="newsletter reveal">
+    <h2>Suscríbete a nuestro Newsletter</h2>
+    <form id="newsletterForm">
+      <input type="email" placeholder="Tu email" required />
+      <button type="submit">Suscribirse</button>
+    </form>
+  </section>
+  
+  <!-- Sección de Testimonios -->
+  <section class="testimonials reveal">
+    <h2>Lo que dicen nuestros clientes</h2>
+    <div class="testimonials-container">
+      <div class="testimonial-card">
+        <p>"¡Increíble selección y precios insuperables! Recomiendo esta tienda a todo amante de videojuegos."</p>
+        <h4>- Juan Pérez</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>"Una experiencia de compra excepcional, un servicio al cliente de primera y una web muy intuitiva."</p>
+        <h4>- María López</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>"Los mejores lanzamientos y ofertas siempre en un solo lugar. ¡Muy recomendable!"</p>
+        <h4>- Carlos Mendoza</h4>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Pie de Página con Contactos -->
+  <footer class="reveal">
+    <div class="footer-contacts">
+      <p>Correo: Pepe'sGames@gmail.com</p>
+      <p>Teléfono: 456 784 342</p>
+      <p>Instagram: @pepesgames</p>
+    </div>
+    <div class="footer-info">&copy; 2023 Pepe's Games. Todos los derechos reservados.</div>
+  </footer>
+  
+  <!-- Botón Volver Arriba -->
+  <button id="backToTop" aria-label="Volver al inicio">&#8593;</button>
+  
+  <!-- Modal Login -->
+  <div id="loginModal" class="modal" role="dialog" aria-labelledby="loginModalLabel" aria-modal="true">
+    <div class="modal-content" tabindex="0">
+      <span class="close" onclick="closeModal('loginModal')" tabindex="0" aria-label="Cerrar modal">&times;</span>
+      <h2 id="loginModalLabel">Iniciar Sesión</h2>
+      <form id="loginForm">
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" required />
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" required />
+        <button type="submit">Ingresar</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Modal Carrito -->
+  <div id="cartModal" class="modal" role="dialog" aria-labelledby="cartModalLabel" aria-modal="true">
+    <div class="modal-content" tabindex="0">
+      <span class="close" onclick="closeModal('cartModal')" tabindex="0" aria-label="Cerrar modal">&times;</span>
+      <h2 id="cartModalLabel">Carrito de Compras</h2>
+      <div id="cartItemsContainer"></div>
+      <div id="cartTotal" style="margin: 10px 0; text-align: right;"></div>
+      <div style="display: flex; gap: 10px; justify-content: space-between;">
+        <button onclick="clearCart()">Vaciar Carrito</button>
+        <button onclick="checkout()">Checkout</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal Detalle del Juego -->
+  <div id="detailModal" class="modal" role="dialog" aria-labelledby="detailModalLabel" aria-modal="true">
+    <div class="modal-content" tabindex="0">
+      <span class="close" onclick="closeModal('detailModal')" tabindex="0" aria-label="Cerrar modal">&times;</span>
+      <h2 id="detailModalLabel">Detalle del Juego</h2>
+      <div id="detailContent"></div>
+      <button onclick="closeModal('detailModal')">Cerrar</button>
+    </div>
+  </div>
+  
+  <!-- Botón de Chat (Soporte) -->
+  <button class="chat-button" onclick="alert('¡Chatea con nuestro soporte en vivo!')" aria-label="Chat de soporte">&#128172;</button>
+  
+  <script>
+    // Carrito global
+    var cartItems = [];
+
+    // Efecto Ripple para botones del encabezado
+    document.querySelectorAll('.header-button').forEach(button => {
+      button.addEventListener('click', function (e) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple-effect');
+        this.appendChild(ripple);
+        const rect = this.getBoundingClientRect();
+        ripple.style.left = e.clientX - rect.left - (ripple.offsetWidth / 2) + 'px';
+        ripple.style.top = e.clientY - rect.top - (ripple.offsetHeight / 2) + 'px';
+        setTimeout(() => { ripple.remove(); }, 600);
+      });
+    });
+
+    // Alternar agregar/quitar productos al carrito con efecto pop
+    function toggleCartState(element, event) {
+      event.stopPropagation();
+      const checkmark = element.querySelector('.checkmark');
+      const card = element.closest('.game-card');
+      const title = card.dataset.title;
+      const price = card.dataset.price;
+      if (checkmark.style.display === "block") {
+        checkmark.style.display = "none";
+        cartItems = cartItems.filter(item => item.title !== title);
+      } else {
+        checkmark.style.display = "block";
+        checkmark.style.animation = "pop 0.5s ease-out";
+        setTimeout(() => { checkmark.style.animation = ""; }, 500);
+        cartItems.push({ title: title, price: parseFloat(price) });
+      }
+      updateCartCount();
+    }
+    
+    // Actualizar contador del carrito
+    function updateCartCount() {
+      document.getElementById('cart-count').innerText = cartItems.length;
+    }
+
+    // Abrir y cerrar modales
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = "block";
+      if (modalId === "cartModal") updateCartModal();
+      document.querySelector("#" + modalId + " .modal-content").focus();
+    }
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = "none";
+    }
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = "none";
+      }
+    };
+
+    // Actualizar el contenido del modal del carrito
+    function updateCartModal() {
+      const container = document.getElementById('cartItemsContainer');
+      container.innerHTML = "";
+      if (cartItems.length === 0) {
+        container.innerHTML = "<p>El carrito está vacío.</p>";
+      } else {
+        cartItems.forEach(function(item) {
+          const itemDiv = document.createElement("div");
+          itemDiv.style.marginBottom = "10px";
+          itemDiv.innerHTML = item.title + " - $" + item.price.toFixed(2);
+          container.appendChild(itemDiv);
+        });
+      }
+      const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+      document.getElementById('cartTotal').innerHTML = "<strong>Total: $" + total.toFixed(2) + "</strong>";
+    }
+    function clearCart() {
+      cartItems = [];
+      updateCartCount();
+      updateCartModal();
+      document.querySelectorAll('.checkmark').forEach(check => check.style.display = "none");
+    }
+    function checkout() {
+      closeModal('cartModal');
+      alert("Proceso de pago no implementado en esta demo.");
+    }
+
+    // Manejar el formulario de login
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      closeModal('loginModal');
+      alert("Bienvenido, " + document.getElementById('username').value + "!");
+    });
+
+    // Filtrado en tiempo real
+    function filterGames() {
+      const searchTerm = document.querySelector('.search-bar input').value.toLowerCase();
+      const selectedGenre = document.querySelector('.filters-container select').value;
+      document.querySelectorAll('.game-card').forEach(card => {
+        const title = card.dataset.title.toLowerCase();
+        const genre = card.dataset.genre.toLowerCase();
+        let show = true;
+        if (selectedGenre !== "ninguno") { 
+          show = show && (genre === selectedGenre); 
+        }
+        if (searchTerm) { 
+          show = show && title.includes(searchTerm); 
+        }
+        card.style.display = show ? "block" : "none";
+      });
+    }
+    document.querySelector('.search-bar input').addEventListener('input', filterGames);
+    document.querySelector('.filters-container select').addEventListener('change', filterGames);
+
+    // Ordenar juegos
+    document.getElementById('sortSelect').addEventListener('change', sortGames);
+    function sortGames() {
+      const sortValue = document.getElementById('sortSelect').value;
+      const container = document.querySelector('.game-container');
+      const gamesArray = Array.from(container.children);
+      if (sortValue === "default") return;
+      if (sortValue === "precio-asc") {
+        gamesArray.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+      } else if (sortValue === "precio-desc") {
+        gamesArray.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+      } else if (sortValue === "alfabetico") {
+        gamesArray.sort((a, b) => a.dataset.title.localeCompare(b.dataset.title));
+      }
+      container.innerHTML = "";
+      gamesArray.forEach(game => container.appendChild(game));
+    }
+
+    // Modal Detalle del Juego
+    function openGameDetail(card) {
+      const title = card.dataset.title;
+      const price = card.dataset.price;
+      const genre = card.dataset.genre;
+      const description = "Este es un excelente videojuego de " + genre + ". Disfruta de horas de entretenimiento y aventuras inolvidables.";
+      const detailContent = document.getElementById('detailContent');
+      detailContent.innerHTML = `<p><strong>Título:</strong> ${title}</p>
+                                 <p><strong>Género:</strong> ${genre}</p>
+                                 <p><strong>Precio:</strong> $${parseFloat(price).toFixed(2)}</p>
+                                 <p>${description}</p>`;
+      openModal('detailModal');
+    }
+    document.querySelectorAll('.game-card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('.cart-square')) return;
+        openGameDetail(card);
+      });
+    });
+
+    // Modo Oscuro/Ligero con Persistencia
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+      const modeToggleImg = document.querySelector("#modeToggle img");
+      if (document.body.classList.contains("dark-mode")) {
+        modeToggleImg.src = "https://cdn-icons-png.flaticon.com/512/1164/1164954.png";
+        modeToggleImg.alt = "Modo Claro";
+        localStorage.setItem("darkMode", "true");
+      } else {
+        modeToggleImg.src = "https://cdn-icons-png.flaticon.com/512/869/869869.png";
+        modeToggleImg.alt = "Modo Oscuro";
+        localStorage.setItem("darkMode", "false");
+      }
+    }
+    if (localStorage.getItem("darkMode") === "true") {
+      document.body.classList.add("dark-mode");
+      document.querySelector("#modeToggle img").src = "https://cdn-icons-png.flaticon.com/512/1164/1164954.png";
+      document.querySelector("#modeToggle img").alt = "Modo Claro";
+    }
+
+    // Botón "Volver arriba"
+    const backToTopButton = document.getElementById('backToTop');
+    window.addEventListener('scroll', function() {
+      backToTopButton.style.display = window.pageYOffset > 300 ? "flex" : "none";
+    });
+    backToTopButton.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Revelar elementos al hacer scroll
+    document.addEventListener("DOMContentLoaded", function() {
+      const revealElements = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          } else {
+            entry.target.classList.remove("visible");
+          }
+        });
+      }, { threshold: 0.1 });
+      revealElements.forEach(el => observer.observe(el));
+    });
+    
+    // Newsletter Feedback
+    document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert("¡Gracias por suscribirte!");
+      this.reset();
+    });
+  </script>
+</body>
+</html>

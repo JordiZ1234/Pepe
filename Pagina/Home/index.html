@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Metaetiquetas SEO -->
+  <meta name="description" content="Pepe'sGames - La mejor experiencia gamer. Descubre novedades, ofertas exclusivas y mucho más." />
+  <meta name="keywords" content="juegos, videojuegos, Pepe'sGames, ofertas, novedades, gamer" />
+  <meta property="og:title" content="Pepe'sGames" />
+  <meta property="og:description" content="Descubre novedades y ofertas exclusivas en Pepe'sGames." />
+  <meta property="og:image" content="Logo/logo.png" />
+  <meta property="og:url" content="http://www.pepesgames.com" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pepe'sGames</title>
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    /* VARIABLES PARA MODO CLARO y OSCURO */
+    :root {
+      --primary: #a200ff;
+      --secondary: #8a2be2;
+      --accent: #ff00ff;
+      --hover: #7a1fbf;
+      --bg: #fdfdfd;
+      --text: #333;
+      --hero-gradient: linear-gradient(-45deg, #eaeaea, #fdfdff, #ffecec, #ffd1ff);
+    }
+    .dark-mode {
+      --primary: #6200ea;
+      --secondary: #3700b3;
+      --accent: #ff4081;
+      --hover: #5c00e0;
+      --bg: #121212;
+      --text: #e0e0e0;
+      /* Fondo hero en modo oscuro */
+      --hero-gradient: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
+    }
+    
+    /* RESET y BASE */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Kanit', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Animaciones clave */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+    .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
+    
+    /* Clase para revelar elementos al hacer scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Secciones ocultas */
+    .hidden-section {
+      display: none;
+    }
+    
+    /* HEADER y NAVEGACIÓN */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 10px;
+      width: 100%;
+      background-color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .logo img { max-width: 150px; height: auto; }
+    .title {
+      font-size: 48px;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      flex-grow: 1;
+    }
+    /* Contenedor para botones en header */
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    /* Botón para cambio de tema */
+    #theme-toggle {
+      width: 50px;
+      height: 50px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+    #theme-toggle:hover { transform: scale(1.1); }
+    #theme-toggle img { width: 40px; height: 40px; }
+    /* Botón de Inicio de Sesión (solo imagen) */
+    .user-account {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+    .user-account:hover { animation: bounce 0.6s; }
+    .user-account img { width: 40px; height: 40px; }
+    
+    .menu {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .menu-item {
+      width: 200px;
+      height: 50px;
+      background-color: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #fff;
+      text-decoration: none;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+    .menu-item:hover {
+      background-color: var(--hover);
+      transform: scale(1.05) rotate(2deg);
+    }
+    
+    /* SECCIÓN HERO (Bienvenida) con efecto parallax sencillo */
+    .hero {
+      padding: 60px 20px;
+      background: var(--hero-gradient);
+      background-size: 400% 400%;
+      background-attachment: fixed;
+      animation: gradientAnimation 15s ease infinite;
+      text-align: center;
+      transition: background 0.3s ease;
+    }
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    .hero p {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+    .btn {
+      padding: 15px 30px;
+      background-color: var(--secondary);
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover { background-color: var(--hover); }
+    
+    /* ACERCA DE NOSOTROS */
+    .about-us {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .about-us h2 {
+      font-size: 36px;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .about-us p {
+      font-size: 18px;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    
+    /* SECCIÓN DE CARACTERÍSTICAS */
+    .features {
+      padding: 40px 20px;
+      text-align: center;
+      background-color: rgba(170, 0, 255, 0.05);
+    }
+    .features h2 {
+      font-size: 36px;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+    .features-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .feature-card {
+      background-color: var(--bg);
+      border: 2px solid var(--secondary);
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 250px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .feature-card h3 {
+      margin-bottom: 10px;
+      color: var(--secondary);
+    }
+    .feature-card p {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    
+    /* BOTÓN para MOSTRAR/Ocultar OFERTAS (Novedades) */
+    .toggle-offers {
+      padding: 20px;
+      text-align: center;
+    }
+    
+    /* OFERTAS (NOVEDADES) */
+    main#ofertas {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .novedades {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+    .offers-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    .offer-card {
+      margin-bottom: 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+    }
+    .offer-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .offer-image {
+      width: 180px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+    }
+    .price {
+      font-size: 18px;
+      color: var(--accent);
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .discount-price {
+      font-size: 16px;
+      color: #ff0000;
+      font-weight: bold;
+      text-decoration: line-through;
+      margin-top: 5px;
+    }
+    
+    /* NEWSLETTER */
+    .newsletter {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .newsletter h2 {
+      font-size: 36px;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .newsletter form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .newsletter input[type="email"] {
+      padding: 10px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+    .newsletter button {
+      padding: 10px 20px;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .newsletter button:hover { background-color: #e600e6; }
+    
+    /* FOOTER CON CONTACTOS */
+    footer {
+      padding: 20px;
+      background-color: var(--primary);
+      color: #fff;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .footer-contacts {
+      margin-top: 15px;
+    }
+    .footer-contacts p { margin: 5px 0; }
+    
+    /* MODAL DE INICIO DE SESIÓN con ARIA */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      color: #333;
+      position: relative;
+      animation: modalFadeIn 0.4s ease-out forwards;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    .modal-content h2 {
+      text-align: center;
+      color: var(--secondary);
+      margin-bottom: 20px;
+    }
+    /* FORMULARIO DE LOGIN */
+    #loginForm {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    #loginForm label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    #loginForm input {
+      padding: 10px;
+      border: 1px solid #bbb;
+      border-radius: 5px;
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+    #loginForm input:focus { border-color: var(--primary); }
+    #loginForm button {
+      padding: 12px;
+      background-color: var(--secondary);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #loginForm button:hover { background-color: var(--hover); }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+    
+    /* BOTÓN "BACK TO TOP" */
+    #back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--secondary);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      z-index: 1001;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    #back-to-top:hover {
+      background-color: var(--hover);
+      transform: scale(1.1);
+    }
+    
+    /* RESPONSIVIDAD */
+    @media (max-width: 768px) {
+      .menu { flex-direction: column; gap: 10px; }
+      .offers-container { flex-direction: column; align-items: center; }
+      .modal-content { width: 90%; }
+      .features-container { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header reveal">
+    <div class="logo">
+      <img src="Logo/logo.png" alt="Pepe'sGames Logo" />
+    </div>
+    <div class="title">Pepe'sGames</div>
+    <div class="header-actions">
+      <button id="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
+        <img id="theme-icon" src="https://cdn-icons-png.flaticon.com/512/869/869869.png" alt="Modo Oscuro" />
+      </button>
+      <button class="user-account" onclick="openModal()" aria-label="Iniciar sesión">
+        <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Icono Iniciar Sesión" />
+      </button>
+    </div>
+  </header>
+  
+  <!-- MENÚ DE NAVEGACIÓN -->
+  <nav class="menu reveal">
+    <a href="/Pagina/Tienda/Index.html" class="menu-item">Tienda</a>
+    <a href="/Pagina/Biblioteca/Codigo html Pepe_s Game.html" class="menu-item">Biblioteca</a>
+    <a href="/Pagina/Segunda mano/index.html" class="menu-item">Segunda Mano</a>
+    <a href="/Pagina/Atención al cliente/index.html" class="menu-item">Atención al Cliente</a>
+  </nav>
+  
+  <!-- SECCIÓN HERO -->
+  <section class="hero reveal">
+    <h1>¡Bienvenido a Pepe'sGames!</h1>
+    <p>
+      Descubre las últimas novedades y ofertas exclusivas en el mundo gamer de forma dinámica y divertida.
+  </section>
+  
+  <!-- ACERCA DE NOSOTROS -->
+  <section class="about-us reveal">
+    <h2>Acerca de Nosotros</h2>
+    <p>
+      En Pepe'sGames nos apasiona brindar una experiencia inolvidable a los amantes de los videojuegos.
+      Nuestra misión es conectar a la comunidad gamer con títulos de alta calidad y novedades emocionantes.
+      ¡Prepárate para sumergirte en un mundo lleno de color, acción y diversión!
+    </p>
+  </section>
+  
+  <!-- SECCIÓN DE CARACTERÍSTICAS -->
+  <section class="features reveal">
+    <h2>¿Por qué elegir Pepe'sGames?</h2>
+    <div class="features-container">
+      <div class="feature-card">
+        <h3>Calidad Asegurada</h3>
+        <p>Juegos verificados y de experiencia superior para que disfrutes al máximo.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Variedad Infinita</h3>
+        <p>Encuentra títulos de todos los géneros y para todos los gustos.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Soporte 24/7</h3>
+        <p>Nuestro equipo te asiste en cualquier momento, siempre estamos disponibles.</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- BOTÓN para MOSTRAR/Ocultar OFERTAS (Novedades) -->
+  <section class="toggle-offers reveal">
+    <button id="toggleOffers" class="btn">Mostrar Novedades</button>
+  </section>
+  
+  <!-- OFERTAS (NOVEDADES) - Oculto por defecto -->
+  <main id="ofertas" class="hidden-section">
+    <h2 class="novedades">NOVEDADES</h2>
+    <div class="offers-container">
+      <a href="reddeadredemption2.html" class="offer-card">
+        <img class="offer-image" src="Imagenes/RedDeadRedemption2/RedDeadRedemption2.jpg" alt="Red Dead Redemption 2" loading="lazy"/>
+        <p class="price">$39.99</p>
+        <p class="discount-price">$59.99</p>
+      </a>
+      <a href="detroitbecomehuman.html" class="offer-card">
+        <img class="offer-image" src="Imagenes/DetroitBecomeHuman/DetroitBecomeHuman.jpg" alt="Detroit Become Human" loading="lazy"/>
+        <p class="price">$29.99</p>
+        <p class="discount-price">$39.99</p>
+      </a>
+      <a href="nba2k25.html" class="offer-card">
+        <img class="offer-image" src="Imagenes/Nba2k25/Nba2k25.jpg" alt="NBA 2k25" loading="lazy"/>
+        <p class="price">$34.99</p>
+        <p class="discount-price">$49.99</p>
+      </a>
+      <a href="fifa25.html" class="offer-card">
+        <img class="offer-image" src="Imagenes/Fifa25/Fifa25.jpg" alt="Fifa 25" loading="lazy"/>
+        <p class="price">$49.99</p>
+        <p class="discount-price">$69.99</p>
+      </a>
+      <a href="gtav.html" class="offer-card">
+        <img class="offer-image" src="Imagenes/GTA5/GTA5.jpg" alt="GTA 5" loading="lazy"/>
+        <p class="price">$19.99</p>
+      </a>
+      <a href="minecraft.html" class="offer-card">
+        <img class="offer-image" src="Imagenes/Minecraft/Minecraft.jpg" alt="Minecraft" loading="lazy"/>
+        <p class="price">$29.99</p>
+      </a>
+      <a href="reddeadredemption2.html" class="offer-card">
+        <img class="offer-image" src="Imagenes/Astrobot/Astrobot.jpg" alt="Red Dead Redemption 2" loading="lazy"/>
+        <p class="price">$39.99</p>
+        <p class="discount-price">$49.99</p>
+      </a>
+      <a href="callofduty.html" class="offer-card">
+        <img class="offer-image" src="Imagenes/TheLastOfUs2/TheLastOfUs2.jpg" alt="Call of Duty" loading="lazy"/>
+        <p class="price">$59.99</p>
+      </a>
+    </div>
+  </main>
+  
+  <!-- NEWSLETTER -->
+  <section class="newsletter reveal">
+    <h2>Suscríbete a Nuestro Newsletter</h2>
+    <form id="newsletterForm">
+      <input type="email" placeholder="Tu correo electrónico" required />
+      <button type="submit">Suscribirse</button>
+    </form>
+  </section>
+  
+  <!-- FOOTER CON CONTACTOS -->
+  <footer class="reveal">
+    <p>&copy; 2023 Pepe'sGames - Todos los derechos reservados</p>
+    <div class="footer-contacts">
+      <p>Correo: Pepesgame@gmail.com</p>
+      <p>Número: 456 784 342</p>
+      <p>Ig: @pepesgame</p>
+    </div>
+    <p>
+      <a href="#">Contacto</a>
+      <a href="#">Ayuda</a>
+    </p>
+  </footer>
+  
+  <!-- MODAL DE INICIO DE SESIÓN con ARIA -->
+  <div class="modal" id="modal-login" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()" aria-label="Cerrar">&times;</span>
+      <h2 id="modal-title">Iniciar sesión</h2>
+      <form id="loginForm">
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" required />
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" required />
+        <button type="submit">Ingresar</button>
+      </form>
+      <p style="text-align: center;"><a href="#">¿Olvidaste tu contraseña?</a></p>
+      <p style="text-align: center;"><a href="#">Crear cuenta</a></p>
+    </div>
+  </div>
+  
+  <!-- BOTÓN "BACK TO TOP" -->
+  <button id="back-to-top" aria-label="Volver al inicio" onclick="scrollToTop()">↑</button>
+  
+  <!-- SCRIPTS -->
+  <script>
+    // Persistencia del tema en localStorage
+    document.addEventListener("DOMContentLoaded", () => {
+      if(localStorage.getItem("theme") === "dark"){
+        document.body.classList.add("dark-mode");
+        document.getElementById("theme-icon").src = "https://cdn-icons-png.flaticon.com/512/1164/1164954.png";
+        document.getElementById("theme-icon").alt = "Modo Claro";
+      }
+      
+      // IntersectionObserver para elementos .reveal
+      const revealElements = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          } else {
+            entry.target.classList.remove("visible");
+          }
+        });
+      }, { threshold: 0.1 });
+      revealElements.forEach(el => observer.observe(el));
+    });
+    
+    // Modal functions
+    function openModal() {
+      document.getElementById("modal-login").style.display = "flex";
+    }
+    function closeModal() {
+      document.getElementById("modal-login").style.display = "none";
+    }
+    
+    // Theme toggle con persistencia
+    function toggleTheme() {
+      const body = document.body;
+      const themeIcon = document.getElementById("theme-icon");
+      body.classList.toggle("dark-mode");
+      if (body.classList.contains("dark-mode")) {
+        themeIcon.src = "https://cdn-icons-png.flaticon.com/512/1164/1164954.png";
+        themeIcon.alt = "Modo Claro";
+        localStorage.setItem("theme", "dark");
+      } else {
+        themeIcon.src = "https://cdn-icons-png.flaticon.com/512/869/869869.png";
+        themeIcon.alt = "Modo Oscuro";
+        localStorage.setItem("theme", "light");
+      }
+    }
+    
+    // Mostrar/Ocultar "Ofertas" (Novedades)
+    document.getElementById("toggleOffers").addEventListener("click", function() {
+      const ofertas = document.getElementById("ofertas");
+      if (ofertas.classList.contains("hidden-section")) {
+        ofertas.classList.remove("hidden-section");
+        this.textContent = "Ocultar Novedades";
+        ofertas.classList.add("animate-fadeInUp");
+      } else {
+        ofertas.classList.add("hidden-section");
+        this.textContent = "Mostrar Novedades";
+      }
+    });
+    
+    // BACK TO TOP
+    window.addEventListener("scroll", function() {
+      const backToTop = document.getElementById("back-to-top");
+      if (document.documentElement.scrollTop > 300) {
+        backToTop.style.display = "flex";
+      } else {
+        backToTop.style.display = "none";
+      }
+    });
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    
+    // Newsletter submission feedback
+    document.getElementById("newsletterForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("¡Gracias por suscribirte!");
+      this.reset();
+    });
+  </script>
+</body>
+</html>
